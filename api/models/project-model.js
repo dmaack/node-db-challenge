@@ -26,7 +26,14 @@ function getProjectsById(id) {
             let [project, tasks, resources] = results;
 
             if(project) {
-                project.tasks = tasks;
+                project.tasks = tasks.map(task => {
+                    if(task.completed === 1) {
+                        task.completed = "true"
+                    } else {
+                        task.completed = "false"
+                    }
+                    return task
+                });
                 project.resources = resources;
 
                 return project
