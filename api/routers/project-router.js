@@ -39,6 +39,18 @@ router.get('/:id/tasks', (req, res) => {
     })
 })
 
+router.get('/:id/resources', (req, res) => {
+    const id = req.params.id;
+
+    Projects.getResourcesForProject(id)
+    .then(resources => {
+        res.status(200).json(resources)
+    })
+    .catch(err => {
+        res.status(500).json({ error: `Failed to get resources for prject with ID ${id}`})
+    })
+})
+
 router.post('/', (req, res) => {
     const newProject = req.body;
 
@@ -62,6 +74,20 @@ router.post('/:id/tasks', (req, res) => {
     })
     .catch(err => {
         res.status(500).json({ error: 'Failed to add a new task to the project'})
+    })
+})
+
+router.post('/:id/resources', (req, res) => {
+    const id = req.params.id;
+    const newResource = req.body;
+    newResource.project_id = id;
+
+    Projects.addResourceToProject(newResource)
+    .then(added => {
+        res.status(201).json({ message: `Success! You added a resource to project with id ${id}`})
+    })
+    .catch(err => {
+        res.status(500).json({ error: 'Failed to add a new resource to the project'})
     })
 })
 
