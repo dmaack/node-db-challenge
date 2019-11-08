@@ -15,9 +15,26 @@ function getProjects() {
 }
 
 function getProjectsById(id) {
-    return db('projects')
-    .where({id})
-    .first()
+    let query = db('projects as p')
+
+    if(id) {
+        query.where('p.id', id).first();
+
+        const promises = [query, this.getTasksForProjects(id), this.getResourcesForProject(id)];
+
+        return Promise.all(promises).then(results => {
+            let [project, tasks, resources] = results;
+
+            if(project) {
+                project.tasks = tasks;
+                project.resources = resources;
+
+                return project
+            } else {
+                return null
+            }
+        })
+    }
 }
 
 function getTasksForProjects(id) {
