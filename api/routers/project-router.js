@@ -9,7 +9,7 @@ router.get('/', (req, res) => {
         let mappedProjects = projects.map(project => {
             if(project.completed === 1) {
                  project.completed = "true"
-            } else if(project.completed === 0) {
+            } else {
                 project.completed = "false"
             }
             return project
@@ -26,8 +26,14 @@ router.get('/:id', (req, res) => {
 
     Projects.getProjectsById(id)
     .then(project => {
-        res.status(200).json(project)
+        if(project.completed === 1) {
+            project.completed = "true"
+        } else {
+            project.completed = "false"
+        }
+           res.status(200).json(project)
     })
+        
     .catch(err => {
         res.status(500).json({ error: `Failed to get project with id ${id}`})
     })
@@ -41,7 +47,7 @@ router.get('/:id/tasks', (req, res) => {
         let mappedTasks = tasks.map(task => {
             if(task.completed === 1) {
                 task.completed = "true"
-            } else if(task.completed === 0){
+            } else {
                 task.completed = "false"
             }
             return task
