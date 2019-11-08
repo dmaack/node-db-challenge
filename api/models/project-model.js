@@ -4,7 +4,8 @@ module.exports = {
     getProjects,
     getProjectsById,
     getTasksForProjects,
-    addProject
+    addProject,
+    addTask
 }
 
 function getProjects() {
@@ -22,6 +23,13 @@ function getTasksForProjects(id) {
     .where({ project_id: id})
 }
 
-function addProject() {
-    
+function addProject(newProject) {
+    return db('projects')
+    .insert(newProject)
+}
+
+
+function addTask(newTask) {
+    return db('tasks')
+    .insert(newTask)
 }

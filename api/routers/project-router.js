@@ -40,11 +40,29 @@ router.get('/:id/tasks', (req, res) => {
 })
 
 router.post('/', (req, res) => {
-    
+    const newProject = req.body;
+
+    Projects.addProject(newProject)
+    .then(added => {
+        res.status(201).json({ message: 'Success! You added a Project'})
+    })
+    .catch(err => {
+        res.status(500).json({ error: 'Failed to add new project'})
+    })
 })
 
 router.post('/:id/tasks', (req, res) => {
-    
+    const id = req.params.id;
+    const newTask = req.body;
+    newTask.project_id = id;
+
+    Projects.addTask(newTask)
+    .then(added => {
+        res.status(201).json({ message: `Success! You added a new task to the project with ID ${id}`})
+    })
+    .catch(err => {
+        res.status(500).json({ error: 'Failed to add a new task to the project'})
+    })
 })
 
 module.exports = router;
