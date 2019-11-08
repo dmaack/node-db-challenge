@@ -1,5 +1,6 @@
 const express = require('express');
 const projectRouter = require('./routers/project-router')
+const resourcesRouter = require('./routers/resources-router')
 const server = express();
 
 
@@ -12,7 +13,7 @@ server
     // })
 
 server.use('/api/projects', projectRouter);
-// server.use('/api/resources', resourcesRouter);
+server.use('/api/resources', resourcesRouter);
 
 server.get('/', (req, res) => {
     res.send(`<h2> Let's write a Project Builder API! </h2>`)
