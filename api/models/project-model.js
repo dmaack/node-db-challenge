@@ -14,8 +14,10 @@ function getProjects() {
     return db('projects')
 }
 
-function getProjectsById() {
-    
+function getProjectsById(id) {
+    return db('projects')
+    .where({id})
+    .first()
 }
 
 function getTasksForProjects(id) {

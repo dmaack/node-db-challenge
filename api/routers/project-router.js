@@ -6,17 +6,30 @@ const router = express.Router();
 router.get('/', (req, res) => {
     Projects.getProjects()
     .then(projects => {
-        projects.map(project => {
+        let mappedProjects = projects.map(project => {
             if(project.completed === 1) {
                  project.completed = "true"
             } else if(project.completed === 0) {
                 project.completed = "false"
             }
-            return res.status(200).json(projects)
+            return project
         })
+        res.status(200).json(mappedProjects)
     })
     .catch(err => {
         res.status(500).json({ error: 'Failed to get Projects'})
+    })
+})
+
+router.get('/:id', (req, res) => {
+    const id = req.params.id;
+
+    Projects.getProjectsById(id)
+    .then(project => {
+        res.status(200).json(project)
+    })
+    .catch(err => {
+        res.status(500).json({ error: `Failed to get project with id ${id}`})
     })
 })
 
@@ -25,14 +38,15 @@ router.get('/:id/tasks', (req, res) => {
 
     Projects.getTasksForProjects(id)
     .then(tasks => {
-        tasks.map(task => {
+        let mappedTasks = tasks.map(task => {
             if(task.completed === 1) {
                 task.completed = "true"
             } else if(task.completed === 0){
                 task.completed = "false"
             }
-            return res.status(200).json(tasks)
+            return task
         })
+        res.status(200).json(mappedTasks)
     })
     .catch(err => {
         res.status(500).json({ error: `Failed to get tasks for project with ID ${id}`})
